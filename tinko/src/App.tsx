@@ -88,31 +88,9 @@ const PaymentGate = ({ onPaymentSuccess }: { onPaymentSuccess: (id: string) => v
     const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
     
     if (!razorpayKey) {
-      setLoading(true);
-      try {
-        const mockPayId = 'mock_pay_' + Date.now();
-        const verifyRes = await fetch('/api/payment/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            razorpay_order_id: 'mock_order_' + Date.now(),
-            razorpay_payment_id: mockPayId,
-            email: email,
-            isMock: true
-          }),
-        });
-        const verifyData = await verifyRes.json();
-        if (verifyData.status === 'success') {
-          onPaymentSuccess(mockPayId);
-        } else {
-          setError('Failed to grant mock access. Please try again.');
-        }
-      } catch (err) {
-        console.error(err);
-        setError('Connection error. Is the server running?');
-      } finally {
-        setLoading(false);
-      }
+      console.log("No Razorpay key found. Granting instant demo access.");
+      const mockPayId = 'mock_pay_' + Date.now();
+      handlePaymentSuccess(mockPayId);
       return;
     }
 
