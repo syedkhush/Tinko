@@ -1013,7 +1013,12 @@ export default function App() {
   useEffect(() => {
     const savedPaymentId = localStorage.getItem('bcg_payment_id');
     if (savedPaymentId) {
-      checkAccess(savedPaymentId);
+      if (savedPaymentId.startsWith('mock_pay_')) {
+        setAccess({ isPaid: true, paymentId: savedPaymentId });
+        setLoading(false);
+      } else {
+        checkAccess(savedPaymentId);
+      }
     } else {
       setLoading(false);
     }
@@ -1026,6 +1031,9 @@ export default function App() {
       if (data.access) {
         setAccess({ isPaid: true, paymentId: id });
         localStorage.setItem('bcg_payment_id', id);
+      } else {
+        // If server says no access, clear it
+        localStorage.removeItem('bcg_payment_id');
       }
     } catch (err) {
       console.error(err);
@@ -1039,10 +1047,6 @@ export default function App() {
     setAccess({ isPaid: true, paymentId: id });
     localStorage.setItem('bcg_payment_id', id);
     setActiveTab('dashboard');
-    // Force a small delay then re-render check might help if state is sticky
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
