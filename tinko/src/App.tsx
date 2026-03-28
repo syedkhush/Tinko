@@ -85,10 +85,12 @@ const PaymentGate = ({ onPaymentSuccess }: { onPaymentSuccess: (id: string) => v
     setError('');
 
     // If keys are missing, allow a mock "Free Unlock" for testing
+    // Use window.location.hostname to detect if we're on a real domain or localhost
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
     
-    if (!razorpayKey) {
-      console.log("No Razorpay key found. Granting instant demo access.");
+    if (!razorpayKey || isLocal) {
+      console.log("Granting instant demo access.");
       const mockPayId = 'mock_pay_' + Date.now();
       handlePaymentSuccess(mockPayId);
       return;
@@ -180,11 +182,14 @@ const PaymentGate = ({ onPaymentSuccess }: { onPaymentSuccess: (id: string) => v
         </div>
       </div>
       <button
-        onClick={handlePayment}
+        onClick={(e) => {
+          e.preventDefault();
+          handlePayment();
+        }}
         disabled={loading}
         className="w-full bg-orange-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-orange-700 transition-all shadow-lg shadow-orange-200 flex items-center justify-center gap-2"
       >
-        {loading ? 'Processing...' : (import.meta.env.VITE_RAZORPAY_KEY_ID ? 'Pay ₹99 to Unlock Everything' : 'Unlock for Free (Demo Mode)')}
+        {loading ? 'Processing...' : 'Unlock for Free (Demo Mode)'}
         <ICONS.ArrowRight className="w-5 h-5" />
       </button>
       <p className="text-xs text-gray-400 mt-4">One-time payment. Lifetime access.</p>
