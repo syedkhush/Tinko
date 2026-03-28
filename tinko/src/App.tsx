@@ -51,9 +51,6 @@ const Navbar = ({ activeTab, setActiveTab, isPaid }: { activeTab: string, setAct
             >
               <Icon className="w-4 h-4" />
               {tab.label}
-              {!isPaid && tab.id !== 'dashboard' && tab.id !== 'decision' && (
-                <ICONS.ShieldCheck className="w-3 h-3 text-gray-400" />
-              )}
             </button>
           );
         })}
@@ -1007,21 +1004,12 @@ const SkillTracker = () => {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [access, setAccess] = useState<AccessState>({ isPaid: false, paymentId: null });
-  const [loading, setLoading] = useState(true);
+  const [access, setAccess] = useState<AccessState>({ isPaid: true, paymentId: 'demo_unlocked' });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const savedPaymentId = localStorage.getItem('bcg_payment_id');
-    if (savedPaymentId) {
-      if (savedPaymentId.startsWith('mock_pay_')) {
-        setAccess({ isPaid: true, paymentId: savedPaymentId });
-        setLoading(false);
-      } else {
-        checkAccess(savedPaymentId);
-      }
-    } else {
-      setLoading(false);
-    }
+    // Access is now forced to true for the demo/testing phase
+    setLoading(false);
   }, []);
 
   const checkAccess = async (id: string) => {
@@ -1052,10 +1040,6 @@ export default function App() {
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   const renderContent = () => {
-    if (!access.isPaid && activeTab !== 'dashboard' && activeTab !== 'decision') {
-      return <PaymentGate onPaymentSuccess={handlePaymentSuccess} />;
-    }
-
     switch (activeTab) {
       case 'dashboard': return (
         <div className="space-y-8">
@@ -1065,14 +1049,6 @@ export default function App() {
               <p className="text-orange-100 text-lg mb-6">
                 Choose between Job, Business, or Farming based on real data, risks, and financial outcomes.
               </p>
-              {!access.isPaid && (
-                <button 
-                  onClick={() => setActiveTab('careers')}
-                  className="bg-white text-orange-700 px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-orange-50 transition-colors"
-                >
-                  Unlock Full Access ₹99 <ICONS.ArrowRight className="w-4 h-4" />
-                </button>
-              )}
             </div>
             <ICONS.Briefcase className="absolute -right-12 -bottom-12 w-64 h-64 text-white/10 rotate-12" />
           </div>
