@@ -1052,9 +1052,14 @@ export default function App() {
   };
 
   const handlePaymentSuccess = (id: string) => {
+    console.log("Setting access for paymentId:", id);
     setAccess({ isPaid: true, paymentId: id });
     localStorage.setItem('bcg_payment_id', id);
     setActiveTab('dashboard');
+    // Force a small delay then re-render check might help if state is sticky
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
