@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BharatCareerData",
+  "type": "object",
+  "properties": {
+    "careers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "title": { "type": "string" },
+            "roadmap": { "type": "string" },
+            "skills": { "type": "array", "items": { "type": "string" } },
+            "cost": { "type": "string" },
+            "salary": { "type": "string" },
+            "growth": { "type": "string" },
+            "risks": { "type": "string" },
+            "balance": { "type": "string" },
+            "who": { "type": "string" }
+          },
+          "required": ["id", "title", "roadmap", "salary"]
+        }
+      }
+    },
+    "govt_jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "eligibility": { "type": "string" },
+          "pattern": { "type": "string" },
+          "roadmap": { "type": "string" },
+          "timeline": { "type": "string" },
+          "difficulty": { "type": "string" },
+          "backup": { "type": "string" }
+        }
+      }
+    },
+    "businesses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "investment": { "type": "string" },
+          "guide": { "type": "string" },
+          "legal": { "type": "string" },
+          "risk": { "type": "string" },
+          "profit_timeline": { "type": "string" },
+          "failure_rate": { "type": "string" },
+          "skills": { "type": "string" },
+          "example": { "type": "string" }
+        }
+      }
+    },
+    "farming": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "investment": { "type": "string" },
+          "land": { "type": "string" },
+          "expenses": { "type": "string" },
+          "income": { "type": "string" },
+          "subsidies": { "type": "string" },
+          "risks": { "type": "string" },
+          "setup": { "type": "string" },
+          "roi": { "type": "string" }
+        }
+      }
+    }
+  }
+}
