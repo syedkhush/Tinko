@@ -85,14 +85,17 @@ const PaymentGate = ({ onPaymentSuccess }: { onPaymentSuccess: (id: string) => v
     setError('');
 
     // If keys are missing, allow a mock "Free Unlock" for testing
-    if (!import.meta.env.VITE_RAZORPAY_KEY_ID) {
+    const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+    
+    if (!razorpayKey) {
       setLoading(true);
       try {
         const verifyRes = await fetch('/api/payment/verify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            razorpay_order_id: 'mock_order',
+            razorpay_order_id: 'mock_order_' + Date.now(),
+            razorpay_payment_id: 'mock_pay_' + Date.now(),
             email: email,
             isMock: true
           }),
@@ -100,9 +103,12 @@ const PaymentGate = ({ onPaymentSuccess }: { onPaymentSuccess: (id: string) => v
         const verifyData = await verifyRes.json();
         if (verifyData.status === 'success') {
           onPaymentSuccess('mock_payment_id');
+        } else {
+          setError('Failed to grant mock access. Please try again.');
         }
       } catch (err) {
         console.error(err);
+        setError('Connection error. Is the server running?');
       } finally {
         setLoading(false);
       }
