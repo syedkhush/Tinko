@@ -90,19 +90,20 @@ const PaymentGate = ({ onPaymentSuccess }: { onPaymentSuccess: (id: string) => v
     if (!razorpayKey) {
       setLoading(true);
       try {
+        const mockPayId = 'mock_pay_' + Date.now();
         const verifyRes = await fetch('/api/payment/verify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             razorpay_order_id: 'mock_order_' + Date.now(),
-            razorpay_payment_id: 'mock_pay_' + Date.now(),
+            razorpay_payment_id: mockPayId,
             email: email,
             isMock: true
           }),
         });
         const verifyData = await verifyRes.json();
         if (verifyData.status === 'success') {
-          onPaymentSuccess('mock_payment_id');
+          onPaymentSuccess(mockPayId);
         } else {
           setError('Failed to grant mock access. Please try again.');
         }

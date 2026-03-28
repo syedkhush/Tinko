@@ -62,15 +62,40 @@ async function startServer() {
 
   apiRouter.post("/payment/verify", async (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature, email, isMock } = req.body;
+    
+    // If it's a mock payment (Demo Mode), we try to record it but always return success
     if (isMock || !process.env.RAZORPAY_KEY_SECRET) {
-      await supabase.from("users_access").insert([{ email, payment_id: razorpay_payment_id || `mock_pay_${Date.now()}`, order_id: razorpay_order_id, access_granted: true }]);
+      console.log(`Mock access requested for ${email}`);
+      try {
+        await supabase.from("users_access").insert([{ 
+          email, 
+          payment_id: razorpay_payment_id || `mock_pay_${Date.now()}`, 
+          order_id: razorpay_order_id || `mock_order_${Date.now()}`, 
+          access_granted: true 
+        }]);
+      } catch (e) {
+        console.error("Supabase insert failed (likely table missing), but proceeding with demo access:", e);
+      }
       return res.json({ status: "success", message: "Mock access granted" });
     }
+    
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSign = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET).update(sign.toString()).digest("hex");
+    
     if (razorpay_signature === expectedSign) {
-      const { error } = await supabase.from("users_access").insert([{ email, payment_id: razorpay_payment_id, order_id: razorpay_order_id, access_granted: true }]);
-      if (error) return res.status(500).json({ error: "Payment verified but failed to grant access" });
+      const { error } = await supabase.from("users_access").insert([{ 
+        email, 
+        payment_id: razorpay_payment_id, 
+        order_id: razorpay_order_id, 
+        access_granted: true 
+      }]);
+      
+      if (error) {
+        console.error("Payment verified but DB error:", error);
+        // Even if DB fails, if signature is valid, we might want to return success for better UX
+        // but for now we'll stick to error for real payments
+        return res.status(500).json({ error: "Payment verified but failed to grant access" });
+      }
       res.json({ status: "success", message: "Payment verified and access granted" });
     } else {
       res.status(400).json({ status: "failure", message: "Invalid signature" });
@@ -80,6 +105,12 @@ async function startServer() {
   apiRouter.get("/payment/check-access", async (req, res) => {
     const { paymentId } = req.query;
     if (!paymentId) return res.json({ access: false });
+    
+    // For demo/mock IDs, always return true to avoid 404/failure in frontend
+    if (paymentId.toString().startsWith('mock_pay_')) {
+      return res.json({ access: true });
+    }
+
     const { data, error } = await supabase.from("users_access").select("access_granted").eq("payment_id", paymentId).single();
     if (error || !data) return res.json({ access: false });
     res.json({ access: data.access_granted });

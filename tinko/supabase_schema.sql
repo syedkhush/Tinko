@@ -65,3 +65,19 @@ INSERT INTO applications (title, category, description, eligibility, apply_link,
 ('CAT 2026', 'degree', 'Common Admission Test for MBA in IIMs and top business schools.', 'Any Graduate (50%)', 'https://iimcat.ac.in/', '2026-09-20', 'Hard', 'exam'),
 ('Merchant Navy (IMU CET)', '12th', 'Entrance for maritime studies and career at sea.', '12th Pass with PCM (60%)', 'https://www.imu.edu.in/', '2026-05-20', 'Moderate', 'exam')
 ON CONFLICT DO NOTHING;
+
+-- 6. User Access Table
+CREATE TABLE IF NOT EXISTS users_access (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  email TEXT NOT NULL,
+  payment_id TEXT UNIQUE NOT NULL,
+  order_id TEXT,
+  access_granted BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW())
+);
+
+ALTER TABLE users_access ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read on users_access" ON users_access;
+CREATE POLICY "Allow public read on users_access" ON users_access FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow public insert on users_access" ON users_access;
+CREATE POLICY "Allow public insert on users_access" ON users_access FOR INSERT WITH CHECK (true);
