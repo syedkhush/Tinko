@@ -1154,7 +1154,8 @@ export default function App() {
         </AnimatePresence>
       </main>
       <footer className="border-t border-gray-200 bg-white mt-12 py-8 px-4 text-center">
-        <p className="text-sm text-gray-500">© 2026 Tinko. Practical Guidance for Indian Students.</p>
+        <p className="text-sm text-gray-500 mb-2">© 2026 Tinko. Practical Guidance for Indian Students.</p>
+        <p className="text-xs text-gray-400 font-medium">Developed by <span className="text-orange-600 font-bold">Syed Sami</span></p>
       </footer>
     </div>
   );
