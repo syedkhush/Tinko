@@ -698,7 +698,7 @@ const CareersExplorer = ({ onSelectCareer }: { onSelectCareer: (career: any) => 
   );
 };
 
-const CareerDetail = ({ career, onBack }: { career: any, onBack: () => void }) => {
+const ItemDetail = ({ item, onBack, type }: { item: any, onBack: () => void, type: string }) => {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <button 
@@ -712,46 +712,70 @@ const CareerDetail = ({ career, onBack }: { career: any, onBack: () => void }) =
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-orange-600 p-2 rounded-xl">
-              <ICONS.GraduationCap className="w-6 h-6 text-white" />
+              {type === 'career' && <ICONS.GraduationCap className="w-6 h-6 text-white" />}
+              {type === 'business' && <ICONS.Building2 className="w-6 h-6 text-white" />}
+              {type === 'farming' && <ICONS.Sprout className="w-6 h-6 text-white" />}
             </div>
-            <span className="text-orange-400 font-bold tracking-widest uppercase text-sm">Career Deep Dive</span>
+            <span className="text-orange-400 font-bold tracking-widest uppercase text-sm">
+              {type === 'career' ? 'Career Deep Dive' : type === 'business' ? 'Business Deep Dive' : 'Farming Deep Dive'}
+            </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black mb-4">{career.title}</h1>
+          <h1 className="text-4xl md:text-5xl font-black mb-4">{item.title}</h1>
           <p className="text-gray-300 text-lg max-w-2xl leading-relaxed mb-8">
-            {career.who}
+            {item.who}
           </p>
           <div className="flex flex-wrap gap-4">
-            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
-              <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Growth Potential</p>
-              <p className="font-bold text-orange-400">{career.growth}</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
-              <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Work-Life Balance</p>
-              <p className="font-bold text-blue-400">{career.balance}</p>
-            </div>
+            {item.growth && (
+              <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+                <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Growth Potential</p>
+                <p className="font-bold text-orange-400">{item.growth}</p>
+              </div>
+            )}
+            {item.profit_timeline && (
+              <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+                <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Profit Timeline</p>
+                <p className="font-bold text-orange-400">{item.profit_timeline}</p>
+              </div>
+            )}
+            {item.roi && (
+              <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+                <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">ROI</p>
+                <p className="font-bold text-orange-400">{item.roi}</p>
+              </div>
+            )}
+            {item.balance && (
+              <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+                <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Work-Life Balance</p>
+                <p className="font-bold text-blue-400">{item.balance}</p>
+              </div>
+            )}
             <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
               <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Risk Level</p>
-              <p className="font-bold text-red-400">{career.risks}</p>
+              <p className="font-bold text-red-400">{item.risks || item.risk}</p>
             </div>
           </div>
         </div>
-        <ICONS.GraduationCap className="absolute -right-20 -bottom-20 w-80 h-80 text-white/5 rotate-12" />
+        {type === 'career' && <ICONS.GraduationCap className="absolute -right-20 -bottom-20 w-80 h-80 text-white/5 rotate-12" />}
+        {type === 'business' && <ICONS.Building2 className="absolute -right-20 -bottom-20 w-80 h-80 text-white/5 rotate-12" />}
+        {type === 'farming' && <ICONS.Sprout className="absolute -right-20 -bottom-20 w-80 h-80 text-white/5 rotate-12" />}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2 space-y-8">
-          <Card title="Step-by-Step Roadmap" icon={ICONS.TrendingUp}>
+          <Card title={type === 'career' ? "Step-by-Step Roadmap" : "Setup Guide"} icon={ICONS.TrendingUp}>
             <div className="relative pl-8 border-l-2 border-orange-100 space-y-8 py-4">
-              {career.roadmap.split('→').map((step: string, i: number) => (
+              {(item.roadmap || item.guide || item.setup).split('→').map((step: string, i: number) => (
                 <div key={i} className="relative">
                   <div className="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-orange-600 border-4 border-white shadow-sm" />
                   <p className="font-bold text-gray-900">{step.trim()}</p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {i === 0 ? "Initial schooling and foundation phase." : 
-                     i === 1 ? "Higher secondary specialization." :
-                     i === 2 ? "Competitive entrance examinations." :
-                     "Professional degree and job entry."}
-                  </p>
+                  {type === 'career' && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      {i === 0 ? "Initial schooling and foundation phase." : 
+                       i === 1 ? "Higher secondary specialization." :
+                       i === 2 ? "Competitive entrance examinations." :
+                       "Professional degree and job entry."}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
@@ -759,51 +783,76 @@ const CareerDetail = ({ career, onBack }: { career: any, onBack: () => void }) =
 
           <Card title="A Day in the Life" icon={ICONS.Clock}>
             <p className="text-gray-600 leading-relaxed italic">
-              "{career.daily_life}"
+              "{item.daily_life}"
             </p>
             <div className="mt-6 pt-6 border-t border-gray-100">
               <h4 className="font-bold text-gray-900 mb-4">Future Prospects:</h4>
-              <p className="text-sm text-gray-600 leading-relaxed">{career.future_prospects}</p>
+              <p className="text-sm text-gray-600 leading-relaxed">{item.future_prospects}</p>
             </div>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card title="Top Colleges in India" icon={ICONS.Building2} className="bg-blue-50/30 border-blue-100">
-              <ul className="space-y-2">
-                {career.colleges?.map((c: string, i: number) => (
-                  <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> {c}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-            <Card title="Entrance Exams" icon={ICONS.Zap} className="bg-purple-50/30 border-purple-100">
-              <ul className="space-y-2">
-                {career.exams?.map((e: string, i: number) => (
-                  <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400" /> {e}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          </div>
+          {type === 'career' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card title="Top Colleges in India" icon={ICONS.Building2} className="bg-blue-50/30 border-blue-100">
+                <ul className="space-y-2">
+                  {item.colleges?.map((c: string, i: number) => (
+                    <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> {c}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+              <Card title="Entrance Exams" icon={ICONS.Zap} className="bg-purple-50/30 border-purple-100">
+                <ul className="space-y-2">
+                  {item.exams?.map((e: string, i: number) => (
+                    <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                      <div className="w-1.5 h-1.5 rounded-full bg-purple-400" /> {e}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </div>
+          )}
         </div>
 
         <div className="space-y-8">
           <Card title="Financial Outlook" icon={ICONS.IndianRupee}>
             <div className="space-y-6">
-              <div>
-                <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Starting Salary</p>
-                <p className="text-2xl font-black text-green-600">{career.salary.split('|')[0]}</p>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Mid-Career Potential</p>
-                <p className="text-2xl font-black text-gray-900">{career.salary.split('|')[1]}</p>
-              </div>
-              <div className="p-4 bg-orange-50 rounded-2xl border border-orange-100">
-                <p className="text-xs font-bold text-orange-700 uppercase mb-1">Education Cost</p>
-                <p className="font-bold text-orange-900">{career.cost}</p>
-              </div>
+              {type === 'career' ? (
+                <>
+                  <div>
+                    <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Starting Salary</p>
+                    <p className="text-2xl font-black text-green-600">{item.salary.split('|')[0]}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Mid-Career Potential</p>
+                    <p className="text-2xl font-black text-gray-900">{item.salary.split('|')[1]}</p>
+                  </div>
+                  <div className="p-4 bg-orange-50 rounded-2xl border border-orange-100">
+                    <p className="text-xs font-bold text-orange-700 uppercase mb-1">Education Cost</p>
+                    <p className="font-bold text-orange-900">{item.cost}</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Initial Investment</p>
+                    <p className="text-2xl font-black text-orange-600">{item.investment}</p>
+                  </div>
+                  {item.income && (
+                    <div>
+                      <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Expected Income</p>
+                      <p className="text-2xl font-black text-green-600">{item.income}</p>
+                    </div>
+                  )}
+                  {item.expenses && (
+                    <div className="p-4 bg-red-50 rounded-2xl border border-red-100">
+                      <p className="text-xs font-bold text-red-700 uppercase mb-1">Monthly Expenses</p>
+                      <p className="font-bold text-red-900">{item.expenses}</p>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </Card>
 
@@ -811,7 +860,7 @@ const CareerDetail = ({ career, onBack }: { career: any, onBack: () => void }) =
             <div className="space-y-4">
               <div className="space-y-2">
                 <p className="text-[10px] font-bold text-green-600 uppercase">Advantages</p>
-                {career.pros?.map((p: string, i: number) => (
+                {item.pros?.map((p: string, i: number) => (
                   <div key={i} className="flex gap-2 text-xs font-medium text-gray-600">
                     <ICONS.CheckCircle2 className="w-3.5 h-3.5 text-green-500 shrink-0" /> {p}
                   </div>
@@ -819,7 +868,7 @@ const CareerDetail = ({ career, onBack }: { career: any, onBack: () => void }) =
               </div>
               <div className="space-y-2 pt-4 border-t border-gray-100">
                 <p className="text-[10px] font-bold text-red-600 uppercase">Challenges</p>
-                {career.cons?.map((c: string, i: number) => (
+                {item.cons?.map((c: string, i: number) => (
                   <div key={i} className="flex gap-2 text-xs font-medium text-gray-600">
                     <ICONS.AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0" /> {c}
                   </div>
@@ -828,9 +877,9 @@ const CareerDetail = ({ career, onBack }: { career: any, onBack: () => void }) =
             </div>
           </Card>
 
-          <Card title="Recommended Subjects" icon={ICONS.Search}>
+          <Card title={type === 'career' ? "Recommended Subjects" : "Key Skills Needed"} icon={ICONS.Search}>
             <div className="flex flex-wrap gap-2">
-              {career.subjects?.map((s: string, i: number) => (
+              {(item.subjects || item.skills)?.map((s: string, i: number) => (
                 <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">
                   {s}
                 </span>
@@ -843,10 +892,10 @@ const CareerDetail = ({ career, onBack }: { career: any, onBack: () => void }) =
   );
 };
 
-const BusinessPathways = () => {
+const BusinessPathways = ({ onSelectItem }: { onSelectItem: (item: any) => void }) => {
   const [search, setSearch] = useState('');
   const filtered = BUSINESS_DATA.filter(b => 
-    b.type.toLowerCase().includes(search.toLowerCase()) || 
+    b.title.toLowerCase().includes(search.toLowerCase()) || 
     b.guide.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -868,27 +917,34 @@ const BusinessPathways = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filtered.length > 0 ? (
           filtered.map((b, i) => (
-            <Card key={i} title={b.type} icon={ICONS.Building2}>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Investment</p>
-                    <p className="text-sm font-bold text-gray-800">{b.investment}</p>
+            <div key={i} onClick={() => onSelectItem(b)} className="cursor-pointer group">
+              <Card title={b.title} icon={ICONS.Building2}>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Investment</p>
+                      <p className="text-sm font-bold text-gray-800">{b.investment}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Profit Start</p>
+                      <p className="text-sm font-bold text-green-600">{b.profit_timeline}</p>
+                    </div>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Profit Start</p>
-                    <p className="text-sm font-bold text-green-600">{b.profit_timeline}</p>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Setup Guide</p>
+                    <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">{b.guide}</p>
+                  </div>
+                  <div className="pt-3 border-t border-gray-50 flex items-center justify-between">
+                    <div className="flex flex-wrap gap-1">
+                      {b.skills?.slice(0, 3).map((s: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px]">{s}</span>
+                      ))}
+                    </div>
+                    <span className="text-orange-600 text-xs font-bold group-hover:translate-x-1 transition-transform">View Details →</span>
                   </div>
                 </div>
-                <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Setup Guide</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{b.guide}</p>
-                </div>
-                <div className="p-2 bg-orange-50 rounded text-[10px] text-orange-700">
-                  <strong>Legal:</strong> {b.legal}
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           ))
         ) : (
           <div className="col-span-full py-12 text-center text-gray-500">
@@ -900,10 +956,10 @@ const BusinessPathways = () => {
   );
 };
 
-const FarmingAdvisor = () => {
+const FarmingAdvisor = ({ onSelectItem }: { onSelectItem: (item: any) => void }) => {
   const [search, setSearch] = useState('');
   const filtered = FARMING_DATA.filter(f => 
-    f.type.toLowerCase().includes(search.toLowerCase()) || 
+    f.title.toLowerCase().includes(search.toLowerCase()) || 
     f.setup.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -925,27 +981,29 @@ const FarmingAdvisor = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filtered.length > 0 ? (
           filtered.map((f, i) => (
-            <Card key={i} title={f.type} icon={ICONS.Sprout}>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Monthly Income</p>
-                    <p className="text-sm font-bold text-green-600">{f.income}</p>
+            <div key={i} onClick={() => onSelectItem(f)} className="cursor-pointer group">
+              <Card title={f.title} icon={ICONS.Sprout}>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Monthly Income</p>
+                      <p className="text-sm font-bold text-green-600">{f.income}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">ROI</p>
+                      <p className="text-sm font-bold text-orange-600">{f.roi}</p>
+                    </div>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">ROI</p>
-                    <p className="text-sm font-bold text-orange-600">{f.roi}</p>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Steps to Start</p>
+                    <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">{f.setup}</p>
+                  </div>
+                  <div className="pt-3 border-t border-gray-50 flex items-center justify-end">
+                    <span className="text-orange-600 text-xs font-bold group-hover:translate-x-1 transition-transform">View Details →</span>
                   </div>
                 </div>
-                <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Steps to Start</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{f.setup}</p>
-                </div>
-                <div className="p-2 bg-green-50 rounded text-[10px] text-green-700">
-                  <strong>Govt Support:</strong> {f.subsidies}
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           ))
         ) : (
           <div className="col-span-full py-12 text-center text-gray-500">
@@ -1411,11 +1469,19 @@ export default function App() {
       );
       case 'careers': 
         if (selectedCareer) {
-          return <CareerDetail career={selectedCareer} onBack={() => setSelectedCareer(null)} />;
+          return <ItemDetail item={selectedCareer} onBack={() => setSelectedCareer(null)} type="career" />;
         }
         return <CareersExplorer onSelectCareer={setSelectedCareer} />;
-      case 'business': return <BusinessPathways />;
-      case 'farming': return <FarmingAdvisor />;
+      case 'business': 
+        if (selectedCareer) {
+          return <ItemDetail item={selectedCareer} onBack={() => setSelectedCareer(null)} type="business" />;
+        }
+        return <BusinessPathways onSelectItem={setSelectedCareer} />;
+      case 'farming': 
+        if (selectedCareer) {
+          return <ItemDetail item={selectedCareer} onBack={() => setSelectedCareer(null)} type="farming" />;
+        }
+        return <FarmingAdvisor onSelectItem={setSelectedCareer} />;
       case 'apply': return <ApplyNow isPaid={access.isPaid} />;
       case 'compare': return <CompareTool />;
       case 'finance': return <FinancePlanner />;

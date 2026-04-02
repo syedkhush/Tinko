@@ -259,32 +259,45 @@ export const GOVT_JOBS = [
 
 export const BUSINESS_DATA = [
   {
-    type: 'Small Business (Retail Shop)',
+    id: 'retail-shop',
+    title: 'Small Business (Retail Shop)',
     investment: '₹5L - ₹20L',
     guide: 'Location selection → Supplier tie-ups → Interior setup → Marketing',
     legal: 'GST, Trade License, MSME Registration',
     risk: 'Moderate (Location dependent)',
     profit_timeline: '6 - 18 months',
     failure_rate: '30-40% in first 3 years',
-    skills: 'Sales, Inventory Management, Customer Service',
-    example: 'Grocery store, Clothing boutique, Mobile repair shop'
+    skills: ['Sales', 'Inventory Management', 'Customer Service', 'Negotiation'],
+    example: 'Grocery store, Clothing boutique, Mobile repair shop',
+    who: 'Individuals with good people skills and a knack for sales.',
+    pros: ['Direct customer interaction', 'Control over your brand', 'Tangible asset creation'],
+    cons: ['High overheads (rent, staff)', 'Long working hours', 'Location is critical for success'],
+    daily_life: 'Managing stock, dealing with customers, handling accounts, and local marketing efforts.',
+    future_prospects: 'Can expand into a multi-location chain or transition to an online model.'
   },
   {
-    type: 'Online Business (E-commerce)',
+    id: 'ecommerce-business',
+    title: 'Online Business (E-commerce)',
     investment: '₹50k - ₹5L',
     guide: 'Product sourcing → Website/Marketplace setup → Digital Marketing → Logistics',
     legal: 'GST (Mandatory for online), MSME',
     risk: 'Low to Moderate (Scalable)',
     profit_timeline: '3 - 12 months',
     failure_rate: '70-80% (High competition)',
-    skills: 'Digital Marketing, SEO, Logistics, Tech-savvy',
-    example: 'Selling handmade crafts on Instagram/Amazon'
+    skills: ['Digital Marketing', 'SEO', 'Logistics', 'Tech-savvy', 'Data Analysis'],
+    example: 'Selling handmade crafts on Instagram/Amazon, Dropshipping',
+    who: 'Tech-savvy entrepreneurs who understand online trends.',
+    pros: ['Low initial investment', 'Global reach', 'Can be run from anywhere'],
+    cons: ['High competition', 'Dependence on ad platforms', 'Logistics can be complex'],
+    daily_life: 'Managing online listings, running ad campaigns, processing orders, and analyzing sales data.',
+    future_prospects: 'The e-commerce market in India is projected to grow exponentially.'
   }
 ];
 
 export const FARMING_DATA = [
   {
-    type: 'Dairy Farming',
+    id: 'dairy-farming',
+    title: 'Dairy Farming',
     investment: '₹10L - ₹15L (for 10 cows/buffaloes)',
     land: '0.5 - 1 Acre (for shed and fodder)',
     expenses: '₹50k - ₹80k/month (Feed, Vet, Labor)',
@@ -292,10 +305,16 @@ export const FARMING_DATA = [
     subsidies: 'NABARD Dairy Entrepreneurship Development Scheme',
     risks: 'Disease outbreaks, milk price fluctuations, high labor dependency',
     setup: 'Shed construction → Animal purchase → Fodder management → Milk supply tie-up',
-    roi: '2 - 3 years'
+    roi: '2 - 3 years',
+    who: 'People with a background in agriculture or a passion for animal husbandry.',
+    pros: ['Consistent daily income', 'High demand for milk products', 'Government support'],
+    cons: ['High physical labor', 'Risk of animal diseases', 'Volatile feed prices'],
+    daily_life: 'Feeding and milking animals, cleaning sheds, managing health, and coordinating with milk collection centers.',
+    future_prospects: 'Opportunity to create value-added products like cheese, yogurt, and ghee.'
   },
   {
-    type: 'Poultry Farming (Broiler)',
+    id: 'poultry-farming',
+    title: 'Poultry Farming (Broiler)',
     investment: '₹5L - ₹8L (for 5000 birds)',
     land: '0.25 Acre',
     expenses: '₹2L - ₹3L per batch (45 days)',
@@ -303,7 +322,12 @@ export const FARMING_DATA = [
     subsidies: 'State-specific poultry schemes',
     risks: 'Bird Flu, high feed costs, extreme weather',
     setup: 'Coop construction → Chick sourcing → Feed management → Market tie-up',
-    roi: '1.5 - 2 years'
+    roi: '1.5 - 2 years',
+    who: 'Entrepreneurs looking for a business with a fast turnaround cycle.',
+    pros: ['Quick ROI', 'Low land requirement', 'High demand for chicken'],
+    cons: ['High risk of disease', 'Dependent on market prices', 'Requires careful management'],
+    daily_life: 'Managing feed and water, monitoring bird health, ensuring proper ventilation, and coordinating with buyers.',
+    future_prospects: 'Contract farming with large corporations is a growing and stable model.'
   }
 ];
 
