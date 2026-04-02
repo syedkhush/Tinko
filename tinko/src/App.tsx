@@ -616,7 +616,7 @@ const FinancePlanner = () => {
   );
 };
 
-const CareersExplorer = () => {
+const CareersExplorer = ({ onSelectCareer }: { onSelectCareer: (career: any) => void }) => {
   const [stream, setStream] = useState<'science' | 'commerce' | 'arts' | 'creative' | 'abroad'>('science');
   const [search, setSearch] = useState('');
   
@@ -659,38 +659,185 @@ const CareersExplorer = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filtered.length > 0 ? (
           filtered.map((c: any) => (
-            <Card key={c.id} title={c.title} icon={ICONS.GraduationCap}>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Roadmap</p>
-                  <p className="text-sm text-gray-800 font-medium">{c.roadmap}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+            <div key={c.id} onClick={() => onSelectCareer(c)} className="cursor-pointer group">
+              <Card title={c.title} icon={ICONS.GraduationCap}>
+                <div className="space-y-4">
                   <div>
-                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Starting Salary</p>
-                    <p className="text-sm font-bold text-green-600">{c.salary?.split('|')[0] || 'Varies'}</p>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Roadmap</p>
+                    <p className="text-sm text-gray-800 font-medium line-clamp-2">{c.roadmap}</p>
                   </div>
-                  <div>
-                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Growth</p>
-                    <p className="text-sm font-bold text-orange-600">{c.growth || 'High'}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Starting Salary</p>
+                      <p className="text-sm font-bold text-green-600">{c.salary?.split('|')[0] || 'Varies'}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Growth</p>
+                      <p className="text-sm font-bold text-orange-600">{c.growth || 'High'}</p>
+                    </div>
+                  </div>
+                  <div className="pt-3 border-t border-gray-50 flex items-center justify-between">
+                    <div className="flex flex-wrap gap-1">
+                      {c.skills?.slice(0, 3).map((s: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px]">{s}</span>
+                      ))}
+                    </div>
+                    <span className="text-orange-600 text-xs font-bold group-hover:translate-x-1 transition-transform">View Details →</span>
                   </div>
                 </div>
-                <div className="pt-3 border-t border-gray-50">
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider mb-1">Key Skills</p>
-                  <div className="flex flex-wrap gap-1">
-                    {c.skills?.map((s: string, i: number) => (
-                      <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px]">{s}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           ))
         ) : (
           <div className="col-span-full py-12 text-center text-gray-500">
             No careers found matching "{search}"
           </div>
         )}
+      </div>
+    </div>
+  );
+};
+
+const CareerDetail = ({ career, onBack }: { career: any, onBack: () => void }) => {
+  return (
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <button 
+        onClick={onBack}
+        className="flex items-center gap-2 text-gray-500 hover:text-orange-600 font-bold transition-colors mb-4"
+      >
+        <ICONS.ArrowRight className="w-4 h-4 rotate-180" /> Back to Explorer
+      </button>
+
+      <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-orange-600 p-2 rounded-xl">
+              <ICONS.GraduationCap className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-orange-400 font-bold tracking-widest uppercase text-sm">Career Deep Dive</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black mb-4">{career.title}</h1>
+          <p className="text-gray-300 text-lg max-w-2xl leading-relaxed mb-8">
+            {career.who}
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+              <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Growth Potential</p>
+              <p className="font-bold text-orange-400">{career.growth}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+              <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Work-Life Balance</p>
+              <p className="font-bold text-blue-400">{career.balance}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+              <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Risk Level</p>
+              <p className="font-bold text-red-400">{career.risks}</p>
+            </div>
+          </div>
+        </div>
+        <ICONS.GraduationCap className="absolute -right-20 -bottom-20 w-80 h-80 text-white/5 rotate-12" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="md:col-span-2 space-y-8">
+          <Card title="Step-by-Step Roadmap" icon={ICONS.TrendingUp}>
+            <div className="relative pl-8 border-l-2 border-orange-100 space-y-8 py-4">
+              {career.roadmap.split('→').map((step: string, i: number) => (
+                <div key={i} className="relative">
+                  <div className="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-orange-600 border-4 border-white shadow-sm" />
+                  <p className="font-bold text-gray-900">{step.trim()}</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {i === 0 ? "Initial schooling and foundation phase." : 
+                     i === 1 ? "Higher secondary specialization." :
+                     i === 2 ? "Competitive entrance examinations." :
+                     "Professional degree and job entry."}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card title="A Day in the Life" icon={ICONS.Clock}>
+            <p className="text-gray-600 leading-relaxed italic">
+              "{career.daily_life}"
+            </p>
+            <div className="mt-6 pt-6 border-t border-gray-100">
+              <h4 className="font-bold text-gray-900 mb-4">Future Prospects:</h4>
+              <p className="text-sm text-gray-600 leading-relaxed">{career.future_prospects}</p>
+            </div>
+          </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card title="Top Colleges in India" icon={ICONS.Building2} className="bg-blue-50/30 border-blue-100">
+              <ul className="space-y-2">
+                {career.colleges?.map((c: string, i: number) => (
+                  <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> {c}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+            <Card title="Entrance Exams" icon={ICONS.Zap} className="bg-purple-50/30 border-purple-100">
+              <ul className="space-y-2">
+                {career.exams?.map((e: string, i: number) => (
+                  <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400" /> {e}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </div>
+        </div>
+
+        <div className="space-y-8">
+          <Card title="Financial Outlook" icon={ICONS.IndianRupee}>
+            <div className="space-y-6">
+              <div>
+                <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Starting Salary</p>
+                <p className="text-2xl font-black text-green-600">{career.salary.split('|')[0]}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Mid-Career Potential</p>
+                <p className="text-2xl font-black text-gray-900">{career.salary.split('|')[1]}</p>
+              </div>
+              <div className="p-4 bg-orange-50 rounded-2xl border border-orange-100">
+                <p className="text-xs font-bold text-orange-700 uppercase mb-1">Education Cost</p>
+                <p className="font-bold text-orange-900">{career.cost}</p>
+              </div>
+            </div>
+          </Card>
+
+          <Card title="Pros & Cons" icon={ICONS.AlertTriangle}>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-[10px] font-bold text-green-600 uppercase">Advantages</p>
+                {career.pros?.map((p: string, i: number) => (
+                  <div key={i} className="flex gap-2 text-xs font-medium text-gray-600">
+                    <ICONS.CheckCircle2 className="w-3.5 h-3.5 text-green-500 shrink-0" /> {p}
+                  </div>
+                ))}
+              </div>
+              <div className="space-y-2 pt-4 border-t border-gray-100">
+                <p className="text-[10px] font-bold text-red-600 uppercase">Challenges</p>
+                {career.cons?.map((c: string, i: number) => (
+                  <div key={i} className="flex gap-2 text-xs font-medium text-gray-600">
+                    <ICONS.AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0" /> {c}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+
+          <Card title="Recommended Subjects" icon={ICONS.Search}>
+            <div className="flex flex-wrap gap-2">
+              {career.subjects?.map((s: string, i: number) => (
+                <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   );
@@ -1169,11 +1316,17 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [access, setAccess] = useState<AccessState>({ isPaid: true, paymentId: 'demo_unlocked' });
   const [loading, setLoading] = useState(false);
+  const [selectedCareer, setSelectedCareer] = useState<any>(null);
 
   useEffect(() => {
     // Access is now forced to true for the demo/testing phase
     setLoading(false);
   }, []);
+
+  // Reset selected career when changing tabs
+  useEffect(() => {
+    setSelectedCareer(null);
+  }, [activeTab]);
 
   const checkAccess = async (id: string) => {
     try {
@@ -1256,7 +1409,11 @@ export default function App() {
           </div>
         </div>
       );
-      case 'careers': return <CareersExplorer />;
+      case 'careers': 
+        if (selectedCareer) {
+          return <CareerDetail career={selectedCareer} onBack={() => setSelectedCareer(null)} />;
+        }
+        return <CareersExplorer onSelectCareer={setSelectedCareer} />;
       case 'business': return <BusinessPathways />;
       case 'farming': return <FarmingAdvisor />;
       case 'apply': return <ApplyNow isPaid={access.isPaid} />;

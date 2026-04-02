@@ -64,7 +64,14 @@ export const CAREER_DATA = {
       growth: 'High. Transition to Architect, Manager, or CTO.',
       risks: 'Burnout, rapid tech obsolescence, sedentary lifestyle.',
       balance: 'Moderate to Poor (Product companies) | Good (MNCs).',
-      who: 'Logical thinkers who enjoy building things and solving puzzles.'
+      who: 'Logical thinkers who enjoy building things and solving puzzles.',
+      colleges: ['IITs', 'NITs', 'IIITs', 'BITS Pilani', 'VIT', 'COEP'],
+      exams: ['JEE Main', 'JEE Advanced', 'BITSAT', 'MHT-CET', 'VITEEE'],
+      subjects: ['Physics', 'Chemistry', 'Mathematics', 'Computer Science'],
+      pros: ['High salary potential', 'Remote work options', 'Creative problem solving'],
+      cons: ['Long sitting hours', 'Constant need to upskill', 'High competition'],
+      daily_life: 'Coding features, debugging issues, attending stand-up meetings, and collaborating with designers.',
+      future_prospects: 'AI and Cloud computing are creating massive demand for specialized engineers.'
     },
     {
       id: 'medical-doctor',
@@ -76,7 +83,14 @@ export const CAREER_DATA = {
       growth: 'Stable. Always in demand. Specialization is key.',
       risks: 'High stress, long hours, legal liabilities, physical exhaustion.',
       balance: 'Poor. Frequent night shifts and emergencies.',
-      who: 'Service-oriented individuals with high academic endurance.'
+      who: 'Service-oriented individuals with high academic endurance.',
+      colleges: ['AIIMS', 'MAMC', 'CMC Vellore', 'AFMC Pune', 'JIPMER'],
+      exams: ['NEET UG', 'NEET PG', 'INI-CET'],
+      subjects: ['Physics', 'Chemistry', 'Biology'],
+      pros: ['High social respect', 'Job security', 'Direct impact on lives'],
+      cons: ['Very long study duration', 'Extremely high stress', 'Work-life balance issues'],
+      daily_life: 'Patient consultations, surgeries, ward rounds, and continuous medical education.',
+      future_prospects: 'Increasing population and health awareness ensure lifelong demand.'
     },
     {
       id: 'research-scientist',
@@ -88,7 +102,14 @@ export const CAREER_DATA = {
       growth: 'Moderate. Focus on publications, patents, and breakthroughs.',
       risks: 'Long duration of study (10+ years), funding dependencies, limited positions.',
       balance: 'Good to Moderate. Mostly academic or lab-based hours.',
-      who: 'Deep thinkers who want to discover new things and advance human knowledge.'
+      who: 'Deep thinkers who want to discover new things and advance human knowledge.',
+      colleges: ['IISc Bangalore', 'IISERs', 'TIFR', 'JNCASR', 'IITs'],
+      exams: ['IAT (IISER Aptitude Test)', 'NEST', 'JEE Advanced', 'GATE'],
+      subjects: ['Physics', 'Chemistry', 'Biology', 'Mathematics'],
+      pros: ['Intellectual satisfaction', 'Contribution to global knowledge', 'Stable academic environment'],
+      cons: ['Lower initial pay', 'Long path to stability', 'Grants can be competitive'],
+      daily_life: 'Designing experiments, analyzing data, writing research papers, and mentoring students.',
+      future_prospects: 'Quantum computing, Biotechnology, and Renewable energy are booming fields.'
     }
   ],
   abroad: [
@@ -102,7 +123,14 @@ export const CAREER_DATA = {
       growth: 'High global mobility. Better work-life balance and infrastructure.',
       risks: 'High initial debt, visa policy changes, cultural adjustment, homesickness.',
       balance: 'Generally Good. Strong labor laws in Europe/North America.',
-      who: 'Ambitious individuals seeking global exposure and better quality of life.'
+      who: 'Ambitious individuals seeking global exposure and better quality of life.',
+      colleges: ['MIT (USA)', 'Stanford (USA)', 'Oxford (UK)', 'TUM (Germany)', 'ETH Zurich'],
+      exams: ['IELTS', 'TOEFL', 'GRE', 'GMAT', 'SAT'],
+      subjects: ['Varies by course', 'English Proficiency'],
+      pros: ['Global exposure', 'Better lifestyle', 'High ROI'],
+      cons: ['Cultural shock', 'Distance from family', 'Visa uncertainties'],
+      daily_life: 'Balancing part-time jobs with intensive studies, networking with international peers.',
+      future_prospects: 'Global demand for skilled labor remains high in developed nations.'
     }
   ],
   commerce: [
@@ -116,7 +144,14 @@ export const CAREER_DATA = {
       growth: 'Very High. Can work in Audit, Tax, Finance, or start own firm.',
       risks: 'Extremely difficult exams (low pass rate), high pressure during tax season.',
       balance: 'Poor during peak seasons (Jan-March, July-Sept) | Good otherwise.',
-      who: 'Numbers-driven people who are disciplined and patient.'
+      who: 'Numbers-driven people who are disciplined and patient.',
+      colleges: ['ICAI (Institute of Chartered Accountants of India)'],
+      exams: ['CA Foundation', 'CA Intermediate', 'CA Final'],
+      subjects: ['Accountancy', 'Economics', 'Business Studies', 'Mathematics'],
+      pros: ['High professional status', 'Recession-proof job', 'Diverse work options'],
+      cons: ['Tough exams', 'High workload', 'Sedentary work'],
+      daily_life: 'Auditing financial statements, tax planning, and advising clients on financial decisions.',
+      future_prospects: 'Increasing compliance and GST regulations keep CAs in high demand.'
     }
   ],
   creative: [
@@ -130,7 +165,14 @@ export const CAREER_DATA = {
       growth: 'Exponential but volatile. Depends on audience retention.',
       risks: 'Income uncertainty, algorithm changes, public scrutiny, high failure rate.',
       balance: 'Flexible but often 24/7 mental engagement.',
-      who: 'Creative risk-takers who enjoy being in the public eye.'
+      who: 'Creative risk-takers who enjoy being in the public eye.',
+      colleges: ['Self-taught', 'Whistling Woods', 'FTII (for technical skills)'],
+      exams: ['None', 'Portfolio based'],
+      subjects: ['Communication', 'Media Studies', 'Psychology'],
+      pros: ['Creative freedom', 'Fame', 'Passive income potential'],
+      cons: ['Burnout', 'Mental health pressure', 'Unpredictable income'],
+      daily_life: 'Scripting, shooting, editing, and engaging with the community online.',
+      future_prospects: 'The creator economy is expanding with brands shifting budgets to influencers.'
     },
     {
       id: 'film-director',
@@ -142,7 +184,14 @@ export const CAREER_DATA = {
       growth: 'High prestige, but extremely competitive. Success depends on "hits".',
       risks: 'Long periods of unemployment, high project-based stress, nepotism.',
       balance: 'Very Poor during shoots (18-hour days) | Good during pre/post-production.',
-      who: 'Visual thinkers with strong leadership and a story to tell.'
+      who: 'Visual thinkers with strong leadership and a story to tell.',
+      colleges: ['FTII Pune', 'SRFTI Kolkata', 'MGR Govt Film Institute', 'Whistling Woods'],
+      exams: ['JET (Joint Entrance Test)'],
+      subjects: ['Humanities', 'Literature', 'Art History'],
+      pros: ['Creative expression', 'Travel', 'Cultural impact'],
+      cons: ['Insecure job market', 'Physical exhaustion', 'Long path to success'],
+      daily_life: 'Planning shots, directing actors, supervising post-production, and pitching ideas.',
+      future_prospects: 'OTT platforms like Netflix/Amazon have increased opportunities for storytellers.'
     },
     {
       id: 'gaming-pro',
@@ -154,7 +203,14 @@ export const CAREER_DATA = {
       growth: 'Rapidly growing industry in India (Esports).',
       risks: 'Short career span (reflexes decline), physical strain (eyes/back), high competition.',
       balance: 'Poor. Requires 8-12 hours of practice/streaming daily.',
-      who: 'Highly competitive individuals with extreme focus and discipline.'
+      who: 'Highly competitive individuals with extreme focus and discipline.',
+      colleges: ['Self-taught', 'Esports Academies (emerging)'],
+      exams: ['None', 'Rankings based'],
+      subjects: ['Strategy', 'Logic', 'English'],
+      pros: ['Monetizing a hobby', 'Global competition', 'Community building'],
+      cons: ['Health risks', 'Short career window', 'High burnout rate'],
+      daily_life: 'Practicing mechanics, reviewing matches, streaming, and interacting with sponsors.',
+      future_prospects: 'Esports is gaining recognition as a legitimate professional sport globally.'
     }
   ],
   skills: [
@@ -168,7 +224,14 @@ export const CAREER_DATA = {
       growth: 'Unlimited. Can transition into a service agency.',
       risks: 'Irregular income, isolation, no corporate benefits (PF/Insurance).',
       balance: 'Excellent. You choose your hours.',
-      who: 'Self-disciplined learners who prefer working alone and remotely.'
+      who: 'Self-disciplined learners who prefer working alone and remotely.',
+      colleges: ['Self-taught', 'Coursera/Udemy Certifications'],
+      exams: ['None', 'Portfolio based'],
+      subjects: ['Computer Science', 'Mathematics', 'English'],
+      pros: ['Freedom of location', 'High hourly rates', 'Variety of projects'],
+      cons: ['Social isolation', 'Self-employment taxes', 'Client management stress'],
+      daily_life: 'Developing features, managing client expectations, and staying updated with tech trends.',
+      future_prospects: 'The gig economy and digitalization are driving huge demand for developers.'
     }
   ]
 };
