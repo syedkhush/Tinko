@@ -18,7 +18,11 @@ import {
   Globe,
   Zap,
   AlertCircle,
-  ExternalLink
+  ExternalLink,
+  Send,
+  Mail,
+  MessageSquare,
+  HelpCircle
 } from 'lucide-react';
 
 export const ICONS = {
@@ -41,7 +45,11 @@ export const ICONS = {
   Globe,
   Zap,
   AlertCircle,
-  ExternalLink
+  ExternalLink,
+  Send,
+  Mail,
+  MessageSquare,
+  HelpCircle
 };
 
 export const CAREER_DATA = {
