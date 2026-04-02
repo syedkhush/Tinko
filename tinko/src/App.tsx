@@ -26,6 +26,7 @@ const Navbar = ({ activeTab, setActiveTab, isPaid }: { activeTab: string, setAct
     { id: 'parents', label: 'Parent\'s Corner', icon: 'Users' },
     { id: 'scholarships', label: 'Scholarships', icon: 'IndianRupee' },
     { id: 'tracker', label: 'Skill Tracker', icon: 'CheckCircle2' },
+    { id: 'help', label: 'Help', icon: 'HelpCircle' },
   ];
 
   return (
@@ -617,121 +618,193 @@ const FinancePlanner = () => {
 
 const CareersExplorer = () => {
   const [stream, setStream] = useState<'science' | 'commerce' | 'arts' | 'creative' | 'abroad'>('science');
+  const [search, setSearch] = useState('');
   
-  // Note: For now we use science data from constants, in real app we'd have all streams
   const data = (CAREER_DATA as any)[stream] || CAREER_DATA.science;
+  const filtered = data.filter((c: any) => 
+    c.title.toLowerCase().includes(search.toLowerCase()) || 
+    c.roadmap.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
       <SectionHeader title="Career Explorer" subtitle="Find the right roadmap for your future." />
-      <div className="flex gap-2 overflow-x-auto no-scrollbar">
-        {['science', 'commerce', 'arts', 'creative', 'abroad'].map((s) => (
-          <button
-            key={s}
-            onClick={() => setStream(s as any)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
-              stream === s ? 'bg-orange-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-orange-500'
-            }`}
-          >
-            {s === 'abroad' ? 'Study Abroad ✈️' : s.charAt(0).toUpperCase() + s.slice(1)}
-          </button>
-        ))}
+      
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar w-full md:w-auto">
+          {['science', 'commerce', 'arts', 'creative', 'abroad'].map((s) => (
+            <button
+              key={s}
+              onClick={() => setStream(s as any)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
+                stream === s ? 'bg-orange-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-orange-500'
+              }`}
+            >
+              {s === 'abroad' ? 'Study Abroad ✈️' : s.charAt(0).toUpperCase() + s.slice(1)}
+            </button>
+          ))}
+        </div>
+        <div className="relative w-full md:w-64">
+          <ICONS.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input 
+            type="text" 
+            placeholder="Search careers..." 
+            className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {data.map((c: any) => (
-          <Card key={c.id} title={c.title} icon={ICONS.GraduationCap}>
-            <div className="space-y-4">
-              <div>
-                <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Roadmap</p>
-                <p className="text-sm text-gray-800 font-medium">{c.roadmap}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+        {filtered.length > 0 ? (
+          filtered.map((c: any) => (
+            <Card key={c.id} title={c.title} icon={ICONS.GraduationCap}>
+              <div className="space-y-4">
                 <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Starting Salary</p>
-                  <p className="text-sm font-bold text-green-600">{c.salary?.split('|')[0] || 'Varies'}</p>
+                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Roadmap</p>
+                  <p className="text-sm text-gray-800 font-medium">{c.roadmap}</p>
                 </div>
-                <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Growth</p>
-                  <p className="text-sm font-bold text-orange-600">{c.growth || 'High'}</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Starting Salary</p>
+                    <p className="text-sm font-bold text-green-600">{c.salary?.split('|')[0] || 'Varies'}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Growth</p>
+                    <p className="text-sm font-bold text-orange-600">{c.growth || 'High'}</p>
+                  </div>
+                </div>
+                <div className="pt-3 border-t border-gray-50">
+                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider mb-1">Key Skills</p>
+                  <div className="flex flex-wrap gap-1">
+                    {c.skills?.map((s: string, i: number) => (
+                      <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px]">{s}</span>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="pt-3 border-t border-gray-50">
-                <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider mb-1">Key Skills</p>
-                <div className="flex flex-wrap gap-1">
-                  {c.skills?.map((s: string, i: number) => (
-                    <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px]">{s}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full py-12 text-center text-gray-500">
+            No careers found matching "{search}"
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 const BusinessPathways = () => {
+  const [search, setSearch] = useState('');
+  const filtered = BUSINESS_DATA.filter(b => 
+    b.type.toLowerCase().includes(search.toLowerCase()) || 
+    b.guide.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
-      <SectionHeader title="Business Pathways" subtitle="Start your own venture with practical guides." />
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <SectionHeader title="Business Pathways" subtitle="Start your own venture with practical guides." />
+        <div className="relative w-full md:w-64">
+          <ICONS.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input 
+            type="text" 
+            placeholder="Search business ideas..." 
+            className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {BUSINESS_DATA.map((b, i) => (
-          <Card key={i} title={b.type} icon={ICONS.Building2}>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Investment</p>
-                  <p className="text-sm font-bold text-gray-800">{b.investment}</p>
+        {filtered.length > 0 ? (
+          filtered.map((b, i) => (
+            <Card key={i} title={b.type} icon={ICONS.Building2}>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Investment</p>
+                    <p className="text-sm font-bold text-gray-800">{b.investment}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Profit Start</p>
+                    <p className="text-sm font-bold text-green-600">{b.profit_timeline}</p>
+                  </div>
                 </div>
                 <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Profit Start</p>
-                  <p className="text-sm font-bold text-green-600">{b.profit_timeline}</p>
+                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Setup Guide</p>
+                  <p className="text-sm text-gray-600 leading-relaxed">{b.guide}</p>
+                </div>
+                <div className="p-2 bg-orange-50 rounded text-[10px] text-orange-700">
+                  <strong>Legal:</strong> {b.legal}
                 </div>
               </div>
-              <div>
-                <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Setup Guide</p>
-                <p className="text-sm text-gray-600 leading-relaxed">{b.guide}</p>
-              </div>
-              <div className="p-2 bg-orange-50 rounded text-[10px] text-orange-700">
-                <strong>Legal:</strong> {b.legal}
-              </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full py-12 text-center text-gray-500">
+            No business ideas found matching "{search}"
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 const FarmingAdvisor = () => {
+  const [search, setSearch] = useState('');
+  const filtered = FARMING_DATA.filter(f => 
+    f.type.toLowerCase().includes(search.toLowerCase()) || 
+    f.setup.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
-      <SectionHeader title="Farming Advisor" subtitle="Modern agriculture for sustainable income." />
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <SectionHeader title="Farming Advisor" subtitle="Modern agriculture for sustainable income." />
+        <div className="relative w-full md:w-64">
+          <ICONS.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input 
+            type="text" 
+            placeholder="Search farming..." 
+            className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {FARMING_DATA.map((f, i) => (
-          <Card key={i} title={f.type} icon={ICONS.Sprout}>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Monthly Income</p>
-                  <p className="text-sm font-bold text-green-600">{f.income}</p>
+        {filtered.length > 0 ? (
+          filtered.map((f, i) => (
+            <Card key={i} title={f.type} icon={ICONS.Sprout}>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Monthly Income</p>
+                    <p className="text-sm font-bold text-green-600">{f.income}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">ROI</p>
+                    <p className="text-sm font-bold text-orange-600">{f.roi}</p>
+                  </div>
                 </div>
                 <div>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">ROI</p>
-                  <p className="text-sm font-bold text-orange-600">{f.roi}</p>
+                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Steps to Start</p>
+                  <p className="text-sm text-gray-600 leading-relaxed">{f.setup}</p>
+                </div>
+                <div className="p-2 bg-green-50 rounded text-[10px] text-green-700">
+                  <strong>Govt Support:</strong> {f.subsidies}
                 </div>
               </div>
-              <div>
-                <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Steps to Start</p>
-                <p className="text-sm text-gray-600 leading-relaxed">{f.setup}</p>
-              </div>
-              <div className="p-2 bg-green-50 rounded text-[10px] text-green-700">
-                <strong>Govt Support:</strong> {f.subsidies}
-              </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full py-12 text-center text-gray-500">
+            No farming ideas found matching "{search}"
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1000,6 +1073,96 @@ const SkillTracker = () => {
   );
 };
 
+const HelpFeedback = () => {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real app, send to Supabase or Email service
+    console.log("Feedback sent:", form);
+    setSent(true);
+    setTimeout(() => setSent(false), 3000);
+    setForm({ name: '', email: '', message: '' });
+  };
+
+  return (
+    <div className="space-y-6 max-w-2xl mx-auto">
+      <SectionHeader title="Help & Feedback" subtitle="Have a question or suggestion? We'd love to hear from you." />
+      <Card title="Send us a message">
+        {sent ? (
+          <div className="py-12 text-center space-y-4">
+            <ICONS.CheckCircle2 className="w-12 h-12 text-green-500 mx-auto" />
+            <p className="text-lg font-bold text-gray-800">Message Sent Successfully!</p>
+            <p className="text-sm text-gray-500">Thank you for your feedback. We'll get back to you soon.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Name</label>
+                <input 
+                  type="text" 
+                  required
+                  className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+                  value={form.name}
+                  onChange={e => setForm({...form, name: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Email</label>
+                <input 
+                  type="email" 
+                  required
+                  className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+                  value={form.email}
+                  onChange={e => setForm({...form, email: e.target.value})}
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Message</label>
+              <textarea 
+                rows={4}
+                required
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all resize-none"
+                value={form.message}
+                onChange={e => setForm({...form, message: e.target.value})}
+              />
+            </div>
+            <button 
+              type="submit"
+              className="w-full bg-orange-600 text-white py-3 rounded-xl font-bold hover:bg-orange-700 transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-2"
+            >
+              Send Feedback <ICONS.Send className="w-4 h-4" />
+            </button>
+          </form>
+        )}
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="p-4 bg-white border border-gray-100 rounded-2xl flex items-center gap-4">
+          <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+            <ICONS.Mail className="w-5 h-5 text-blue-600" />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-gray-400 uppercase">Email Support</p>
+            <p className="text-sm font-medium text-gray-700">support@tinko.in</p>
+          </div>
+        </div>
+        <div className="p-4 bg-white border border-gray-100 rounded-2xl flex items-center gap-4">
+          <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+            <ICONS.MessageSquare className="w-5 h-5 text-green-600" />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-gray-400 uppercase">WhatsApp</p>
+            <p className="text-sm font-medium text-gray-700">+91 98765 43210</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- Main App ---
 
 export default function App() {
@@ -1086,6 +1249,10 @@ export default function App() {
               <p className="text-sm text-gray-600 mb-4">Track your mastery of key skills for your chosen career.</p>
               <button onClick={() => setActiveTab('tracker')} className="text-orange-600 font-semibold text-sm flex items-center gap-1">Start Tracking <ICONS.ArrowRight className="w-3 h-3" /></button>
             </Card>
+            <Card title="Need Help?" icon={ICONS.HelpCircle} className="bg-blue-50 border-blue-100">
+              <p className="text-sm text-gray-600 mb-4">Have questions? Reach out to our support team for guidance.</p>
+              <button onClick={() => setActiveTab('help')} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors">Contact Us</button>
+            </Card>
           </div>
         </div>
       );
@@ -1101,6 +1268,7 @@ export default function App() {
       case 'parents': return <ParentsCorner />;
       case 'scholarships': return <ScholarshipFinder />;
       case 'tracker': return <SkillTracker />;
+      case 'help': return <HelpFeedback />;
       default: return <div>Dashboard</div>;
     }
   };
