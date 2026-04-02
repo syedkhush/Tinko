@@ -130,7 +130,7 @@ const PaymentGate = ({ onPaymentSuccess }: { onPaymentSuccess: (id: string) => v
         },
         prefill: {
           email: email,
-          contact: '6300244188'
+          contact: '6300241881'
         },
         theme: { color: '#ea580c' }
       };
@@ -1155,7 +1155,7 @@ const HelpFeedback = () => {
           </div>
           <div>
             <p className="text-xs font-bold text-gray-400 uppercase">WhatsApp</p>
-            <p className="text-sm font-medium text-gray-700">+91 63002 44188</p>
+            <p className="text-sm font-medium text-gray-700">+91 63002 41881</p>
           </div>
         </div>
       </div>
