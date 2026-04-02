@@ -130,7 +130,7 @@ const PaymentGate = ({ onPaymentSuccess }: { onPaymentSuccess: (id: string) => v
         },
         prefill: {
           email: email,
-          contact: '9999999999'
+          contact: '6300244188'
         },
         theme: { color: '#ea580c' }
       };
@@ -1146,7 +1146,7 @@ const HelpFeedback = () => {
           </div>
           <div>
             <p className="text-xs font-bold text-gray-400 uppercase">Email Support</p>
-            <p className="text-sm font-medium text-gray-700">support@tinko.in</p>
+            <p className="text-sm font-medium text-gray-700">sami80834@gmail.com</p>
           </div>
         </div>
         <div className="p-4 bg-white border border-gray-100 rounded-2xl flex items-center gap-4">
@@ -1155,7 +1155,7 @@ const HelpFeedback = () => {
           </div>
           <div>
             <p className="text-xs font-bold text-gray-400 uppercase">WhatsApp</p>
-            <p className="text-sm font-medium text-gray-700">+91 98765 43210</p>
+            <p className="text-sm font-medium text-gray-700">+91 63002 44188</p>
           </div>
         </div>
       </div>
